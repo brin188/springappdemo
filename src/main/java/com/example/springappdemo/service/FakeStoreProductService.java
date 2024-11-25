@@ -19,8 +19,11 @@ import java.util.List;
 @Service
 public class FakeStoreProductService implements ProductService {
 
-    @Autowired
     RestTemplate restTemplate;
+
+    public FakeStoreProductService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Override
     public Product getProductById(long id) throws ProductNotFoundException {
@@ -61,14 +64,13 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public Product deleteProduct(long id) throws ProductNotFoundException {
+    public void deleteProduct(long id) throws ProductNotFoundException {
         ResponseExtractor<ResponseEntity<FakeStoreProductDto>> responseExtractor =
                 restTemplate.responseEntityExtractor(FakeStoreProductDto.class);
         FakeStoreProductDto responseDto = restTemplate.execute("https://fakestoreapi.com/products/" + id, HttpMethod.DELETE,
                 null, responseExtractor).getBody();
         if(responseDto == null)
             throw new ProductNotFoundException(100L, "Product not found for id " + id);
-        return convertFakeStoreProductDtoToProduct(responseDto);
     }
 
     @Override

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service("SelfProductService")
 @Primary
@@ -26,37 +27,58 @@ public class SelfProductService implements ProductService {
 
     @Override
     public Product getProductById(long id) throws ProductNotFoundException {
-        return productRepo.findById(id).get();
+        Optional<Product> product = productRepo.findById(id);
+        if (product.isEmpty()) {
+            throw new ProductNotFoundException(100L, "Product not found for id " + id);
+        }
+        return product.get();
     }
 
     @Override
     public List<Product> getAllProducts() {
-        return List.of();
+        return productRepo.findAll();
     }
 
     @Override
     public Product replaceProduct(long id, Product product) throws ProductNotFoundException {
-        return null;
+        Product oldProduct = getProductById(id);
+        oldProduct.setTitle(product.getTitle());
+        oldProduct.setDescription(product.getDescription());
+        oldProduct.setPrice(product.getPrice());
+        Category category = categoryRepo.findById(product.getCategory().getId()).get();
+        oldProduct.setCategory(category);
+        return productRepo.save(oldProduct);
     }
 
     @Override
-    public Product deleteProduct(long id) throws ProductNotFoundException {
-        return null;
+    public void deleteProduct(long id) throws ProductNotFoundException {
+        Product product = getProductById(id);
+        productRepo.delete(product);
     }
 
     @Override
     public Product updateProduct(long id, Product product) throws ProductNotFoundException {
-        return null;
+        Product productInDB = getProductById(id);
+        if(product.getTitle() != null)
+            productInDB.setTitle(product.getTitle());
+        if(product.getDescription() != null)
+            productInDB.setDescription(product.getDescription());
+        if(product.getPrice() != null)
+            productInDB.setPrice(product.getPrice());
+        if(product.getCategory() != null) {
+            Category category = categoryRepo.findById(product.getCategory().getId()).get();
+            productInDB.setCategory(category);
+        }
+        return productRepo.save(productInDB);
     }
 
     @Override
     public Product addProduct(Product product) {
-        Category category = product.getCategory();
-        System.out.println("Category id - " + category.getId());
-        if(category.getId() == null) {
-            Category newCategory = categoryRepo.save(category);
-            product.setCategory(newCategory);
-        }
+          Category category = product.getCategory();
+          if(category != null && category.getId() != null) {
+              category = categoryRepo.findById(category.getId()).get();
+              product.setCategory(category);
+          }
         return productRepo.save(product);
     }
 }

@@ -3,7 +3,6 @@ package com.example.springappdemo.controller;
 import com.example.springappdemo.exception.ProductNotFoundException;
 import com.example.springappdemo.model.Product;
 import com.example.springappdemo.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    @Autowired
+
     ProductService productService;
 
     public ProductController(@Qualifier("SelfProductService") ProductService productService) {
@@ -28,8 +27,9 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> productList = productService.getAllProducts();
+        return new ResponseEntity<>(productList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -47,10 +47,10 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Product> deleteProduct(@PathVariable("id") long id)
+    public ResponseEntity<String> deleteProduct(@PathVariable("id") long id)
             throws ProductNotFoundException {
-        Product product = productService.deleteProduct(id);
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        productService.deleteProduct(id);
+        return new ResponseEntity<>("Deleted product with id " + id, HttpStatus.OK);
     }
 
     @PostMapping()

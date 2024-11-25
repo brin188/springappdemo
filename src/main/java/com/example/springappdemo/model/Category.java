@@ -14,6 +14,6 @@ import java.util.List;
 public class Category extends BaseModel {
     String description;
 
-    @OneToMany(mappedBy = "category",fetch = FetchType.EAGER)
-    List<Product> products;
+    //@OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
+    //List<Product> products;
 }

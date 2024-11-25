@@ -13,7 +13,7 @@ public interface ProductService {
 
     Product replaceProduct(long id, Product product) throws ProductNotFoundException;
 
-    Product deleteProduct(long id) throws ProductNotFoundException;
+    void deleteProduct(long id) throws ProductNotFoundException;
 
     Product updateProduct(long id, Product product) throws ProductNotFoundException;
 

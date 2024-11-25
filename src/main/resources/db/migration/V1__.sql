@@ -1,8 +1,0 @@
-ALTER TABLE ecom.category
-    ADD `description` VARCHAR(255) NULL;
-
-ALTER TABLE ecom.category
-    MODIFY id BIGINT AUTO_INCREMENT;
-
-ALTER TABLE ecom.product
-    MODIFY id BIGINT AUTO_INCREMENT;
