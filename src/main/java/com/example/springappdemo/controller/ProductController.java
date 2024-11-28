@@ -3,11 +3,13 @@ package com.example.springappdemo.controller;
 import com.example.springappdemo.exception.ProductNotFoundException;
 import com.example.springappdemo.model.Product;
 import com.example.springappdemo.service.ProductService;
+import com.example.springappdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.naming.AuthenticationException;
 import java.util.List;
 
 @RestController
@@ -15,13 +17,18 @@ import java.util.List;
 public class ProductController {
 
     ProductService productService;
+    UserService userService;
 
-    public ProductController(@Qualifier("SelfProductService") ProductService productService) {
+    public ProductController(@Qualifier("SelfProductService") ProductService productService, UserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") long id) throws ProductNotFoundException {
+    public ResponseEntity<Product> getProductById(@PathVariable("id") long id) // , @RequestHeader("token") String token
+            throws ProductNotFoundException {
+//        if(!userService.validateToken(token))
+//            throw new AuthenticationException("Invalid token. Access denied.");
         Product product = productService.getProductById(id);
         return new ResponseEntity<>(product, HttpStatus.OK);
     }

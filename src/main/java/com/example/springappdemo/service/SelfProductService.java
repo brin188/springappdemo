@@ -8,6 +8,7 @@ import com.example.springappdemo.repository.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +18,13 @@ import java.util.Optional;
 public class SelfProductService implements ProductService {
 
     ProductRepo productRepo;
-
     CategoryRepo categoryRepo;
+    RestTemplate restTemplate;
 
-    public SelfProductService(ProductRepo productRepo, CategoryRepo categoryRepo) {
+    public SelfProductService(ProductRepo productRepo, CategoryRepo categoryRepo, RestTemplate restTemplate) {
         this.productRepo = productRepo;
         this.categoryRepo = categoryRepo;
+        this.restTemplate = restTemplate;
     }
 
     @Override
