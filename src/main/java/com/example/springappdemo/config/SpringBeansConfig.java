@@ -15,12 +15,12 @@ public class SpringBeansConfig {
         return new RestTemplate(); // new RestTemplateBuilder().build();
     }
 
-    @Bean
-    public FilterRegistrationBean<DelegatingFilterProxy> authFilterRegistration() {
-        FilterRegistrationBean<DelegatingFilterProxy> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new DelegatingFilterProxy("customAuthFilter"));
-        registrationBean.addUrlPatterns("/*");
-        return registrationBean;
-    }
+//    @Bean
+//    public FilterRegistrationBean<DelegatingFilterProxy> authFilterRegistration() {
+//        FilterRegistrationBean<DelegatingFilterProxy> registrationBean = new FilterRegistrationBean<>();
+//        registrationBean.setFilter(new DelegatingFilterProxy("customAuthFilter"));
+//        registrationBean.addUrlPatterns("/*");
+//        return registrationBean;
+//    }
 }
 

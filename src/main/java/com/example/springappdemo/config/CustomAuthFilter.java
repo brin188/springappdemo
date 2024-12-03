@@ -11,7 +11,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.io.IOException;
 
-@Component("customAuthFilter")
+//@Component("customAuthFilter")
 public class CustomAuthFilter implements Filter {
 
     UserService userService;
